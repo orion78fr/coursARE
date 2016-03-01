@@ -1,0 +1,17 @@
+$ python3
+
+Python 3.5.1+ (default, Jan 13 2016, 15:09:18) 
+[GCC 5.3.1 20160101] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+
+>>> 5 + 2
+7
+>>> 5 / 3
+1.6666666666666667
+>>> 5 // 3
+1
+>>> 5 % 3
+2
+>>> 2 ** 4
+16
+>>>

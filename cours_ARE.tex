@@ -12,6 +12,14 @@
 \usepackage{textcomp}
 \usepackage{listings}
 \lstset{
+  literate=%
+         {à}{{\`a}}1
+         {é}{{\'e}}1
+         {è}{{\`e}}1
+         {î}{{\^i}}1
+         {ù}{{\`u}}1
+         {û}{{\^u}}1
+         {ê}{{\^e}}1,
  tabsize=4,
  language=python,
  upquote=true,
@@ -38,6 +46,17 @@
 \lstnewenvironment{code}[2][]
  {\ifthenelse{\isundefined{#2}}{\newsavebox{#2}}{}\lstset{#1}\global\setbox#2\vbox\bgroup}
  {\egroup}
+
+\lstdefinelanguage{consoledisplay}{
+  alsoletter={>+-/*\%},
+  morekeywords=[1]{>>>},
+  keywordstyle=[1]\color{red},
+  morekeywords=[2]{\$},
+  keywordstyle=[2]\color{green},
+  morekeywords=[3]{+, -, *, /, \%, //, **},
+  keywordstyle=[3]\color{blue!50!white}
+}
+\newcommand{\codeinput}[2]{\ifthenelse{\isundefined{#2}}{\newsavebox{#2}}{}\global\setbox#2\vbox{\lstinputlisting[language=consoledisplay, linewidth=2\textwidth]{#1}}}
 
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes}
@@ -88,7 +107,7 @@
 
 \begin{frame}
   \begin{itemize}
-    \item Langage de programmation $\Rightarrow$ rendre un langage compréhensible par l'homme en un langage compréhensible par l'ordinateur (binaire)
+    \item Langage de programmation $\Rightarrow$ permet de rendre un langage compréhensible par l'homme en un langage compréhensible par l'ordinateur (binaire)
     \item Python créé en 1991 par Guido van Rossum
     \item Langage interprété : transcrit au fur et a mesure\\($\neq$ langage compilé)
   \end{itemize}
@@ -102,40 +121,41 @@
       
         \item Utilisation
         \begin{itemize}
-            \item En ligne de commande (interactif) : `python` \\
-            ou `python3` selon les distributions
-            (quitter avec Ctrl+D)
+            \item En ligne de commande (interactif) : `python`\\
+            \quad ou `python3` selon les distributions (linux)\\
+            \quad (quitter avec Ctrl+D)\\
+            \qquad $\Rightarrow$ On tape l'opération, elle est exécutée
           
-            \item Dans un fichier .py puis `python fichier.py`
+            \item Dans un fichier .py puis `python3 fichier.py`
         \end{itemize}
     \end{itemize}
 \end{frame}
 
-\subsubsection{Opérations et mots clés}
+\codeinput{python-out/basic-ops}{\codebox}
+
+\subsubsection{Opérations}
 
 \begin{frame}
    \begin{itemize}
         \item Addition +, Soustraction -, Multiplication *, Division /, Division entière //, Modulo \%, Exposant **
-  
-        \item Mots clés du langage:
-        \\\lstinline{and as assert break class continue def del elif else except False finally for from global if import in is lambda none nonlocal not or pass raise return True try while with yield}
     \end{itemize}
+    \scalebox{0.5}{\usebox\codebox}
 \end{frame}
 
 \subsubsection{Variables}
 
 \begin{code}{\codebox}
-variable = 3*3
-variable += 2
-variable -= 5
-#  *=  /=  //=  %=  **=
+variable = 3*3 # = 9
+variable += 2  # = 11
+variable -= 5  # = 6
+#  On a aussi :  *=  /=  //=  %=  **= ...
 \end{code}
 \begin{frame}
    \begin{itemize}
-        \item Permet de stocker les résultats des opérations.\\
+        \item Permet de stocker les résultats des opérations (mémoire)\\
         \usebox\codebox
   
-        \item Chaine de caractère : \lstinline{"..."}, \lstinline{'...'}, \lstinline{""" multi-ligne """}
+        \item Chaîne de caractères (texte) : \lstinline{"..."}, \lstinline{'...'}, \lstinline{""" texte multi-ligne """}
     \end{itemize}
 \end{frame}
 
@@ -143,12 +163,12 @@ variable -= 5
 
 \begin{frame}
    \begin{itemize}
-        \item Pour savoir le type : \lstinline{type(variable)}\\
-        Types : int = entier, float = chiffre a virgule, str = chaine
+        \item Pour savoir le type d'une variable : \lstinline{type(variable)}\\
+        Types : int = entier, float = chiffre a virgule, str = chaine... \\[1cm]
   
-        \item Afficher quelque chose : \lstinline{print("V", "=", v, "!")}
+        \item Afficher quelque chose : \lstinline{print("V = ", variable, "!")} \\[1cm]
   
-        \item Afficher l'aide : \lstinline{help("fonction")}
+        \item Afficher l'aide : \lstinline{help("fonction")} (par exemple help(``print''))
     \end{itemize}
 \end{frame}
 
@@ -156,41 +176,49 @@ variable -= 5
 
 \subsubsection{Opérateurs de comparaison}
 
-\begin{code}{\codebox}
->   <   >=   <=   ==   !=
-\end{code}
 \begin{frame}
-  \usebox\codebox
-
-  \lstinline{and} \quad \lstinline{or} \quad \lstinline{not}\\[0.5cm]
+  \begin{itemize}
+  \item Plus~petit~<, Plus~grand~>, Plus~petit~ou~égal~<=, Plus~grand~ou~égal >=, Egal~==, Différent~!=\\[0.5cm]
+    
+\item a \lstinline{and} b si a \textbf{et} b sont vrais\\
+  a \lstinline{or} b si a \textbf{ou} b sont vrais (ou les deux)\\
+  \lstinline{not} a si a n'est pas vrai (inverse le résultat)\\[0.5cm]
   
-  Renvoient True ou False
+  \item Renvoient True (vrai) ou False (faux)
+  \end{itemize}
+
 \end{frame}
 
 \subsubsection{Conditions}
 
 \begin{code}{\codeboxa}
-if a > 20:
-    # L'indentation est obligatoire
-    print("Trop grand!")
+if a < 18:
+    #L'indentation/décalage est obligatoire
+    print("Trop jeune!")
 \end{code}
 \begin{code}{\codeboxb}
-if a > 20:
-    # L'indentation est obligatoire
-    print("Trop grand!")
-elif a <= 0:
-    print("Trop petit!")
+if a < 18:
+    # L'indentation/décalage est obligatoire
+    print("Trop jeune!")
+elif a >= 60:
+    print("Trop vieux!")
 \end{code}
 \begin{code}{\codeboxc}
-if a > 20:
-    # L'indentation est obligatoire
-    print("Trop grand!")
-elif a <= 0:
-    print("Trop petit!")
+if a < 18:
+    # L'indentation/décalage est obligatoire
+    print("Trop jeune!")
+elif a >= 60:
+    print("Trop vieux!")
 else:
-    print("Tout est OK")
+    print("Tout est OK, tu peux entrer")
 \end{code}
 \begin{frame}
+  \begin{itemize}
+  \item ``Si ... alors'' $\Rightarrow$ \lstinline{if}\\
+    ``Sinon, si ... alors'' $\Rightarrow$ \lstinline{elif}\\
+    ``Sinon, faire ...'' $\Rightarrow$ \lstinline{else}
+  \end{itemize}
+  
     \begin{overprint}
     \onslide<1>\usebox\codeboxa
     \onslide<2>\usebox\codeboxb
@@ -217,6 +245,12 @@ for chiffre in range(1,5):
         break
 \end{code}
 \begin{frame}
+   \begin{itemize}
+  \item ``Tant que ..., faire'' $\Rightarrow$ \lstinline{while}\\
+    ``Pour chacun ... dans ..., faire'' $\Rightarrow$ \lstinline{for ... in}\\
+    ``Passer au suivant'' $\Rightarrow$ \lstinline{continue}\\
+    ``Arrêter la boucle'' $\Rightarrow$ \lstinline{break}\\[1cm]
+  \end{itemize}
   \begin{overprint}
     \onslide<1>\usebox\codeboxa
     \onslide<2>\usebox\codeboxb
@@ -231,15 +265,18 @@ def fonction(param1, param2, ..., paramN):
     """Documentation
     blablabla"""
     # contenu
-    return param1 + param2
+    return param1 * (param2 + param3)
 \end{code}
 
 \begin{frame}
+  \begin{itemize}
+  \item \lstinline{return} définit la valeur de retour de la fonction\\[1cm]
+  \end{itemize}
   \usebox\codebox
 \end{frame}
 
 \begin{code}{\codebox}
-def f(a=1, b=2, c=3):
+def f(a=1, b=2, c=3): # Valeurs par défaut
     # contenu
     return a + b * c
 \end{code}
@@ -259,6 +296,7 @@ from math import sqrt
 sqrt(16)
 \end{code}
 \begin{code}{\codeboxb}
+# Aléatoire
 import random
   
 random.randrange(50) # 0 <= r <= 49
@@ -266,6 +304,9 @@ random.randrange(50) # 0 <= r <= 49
 random.randrange(1,7) # 1 <= r <= 6
 \end{code}
 \begin{frame}
+  \begin{itemize}
+  \item \lstinline{import} permet de récupérer des fonctions déjà écrites\\[0.6cm]
+  \end{itemize}
   \begin{overprint}
     \onslide<1>\usebox\codeboxa
     \onslide<2>\usebox\codeboxb
@@ -285,9 +326,9 @@ liste.append(42)
 liste.insert(4, "bonjour")
 l1 += l2 # pareil que l1.extend(l2)
   
-del liste[2] # supprime le 3eme element
+del liste[2] # supprime le 3ème élément
 liste.remove("bonjour")
-# supprime la premiere occurence de l'element
+# supprime la première occurence de l'élément
 \end{code}
 \begin{code}{\codeboxb}
 for elem in liste:
@@ -349,11 +390,11 @@ f.close()
 \begin{code}{\codeboxb}
 f.read() # lis le fichier
   
-f.write("blablabla") # ecrit dans le fichier
+f.write("blablabla") # écrit dans le fichier
   
 with open("fichier", "w") as fichier:
     # ferme automatiquement le fichier
-    # a la fin du bloc
+    # à la fin du bloc
 \end{code}
 \begin{frame}
   \begin{overprint}
