@@ -10,7 +10,7 @@ install:
             texlive-base texlive-latex-base texlive-generic-recommended \
             texlive-fonts-recommended texlive-fonts-extra \
             texlive-extra-utils texlive-latex-recommended texlive-latex-extra \
-            texinfo lmodern latexmk texlive-lang-french
+            texinfo lmodern latexmk texlive-lang-french texlive-science texlive-full
 build_script:
 - sh: >-
     latexmk -pdf cours_ARE.tex
