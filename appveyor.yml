@@ -1,0 +1,18 @@
+version: '{branch}-{build}'
+image: Ubuntu
+install:
+- &2063251921 sh: >-
+    sudo add-apt-repository -y "ppa:texlive-backports/ppa"
+    
+    sudo apt-get update
+    
+    sudo apt-get install -y --no-install-recommends \
+            texlive-base texlive-latex-base texlive-generic-recommended \
+            texlive-fonts-recommended texlive-fonts-extra \
+            texlive-extra-utils texlive-latex-recommended texlive-latex-extra \
+            texinfo lmodern latexmk texlive-lang-french
+build_script:
+- sh: >-
+    latexmk -pdf cours_ARE.tex
+artifacts:
+- path: cours_ARE.pdf
