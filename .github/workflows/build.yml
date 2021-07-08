@@ -22,4 +22,5 @@ jobs:
         with:
           name: PDF Document
           path: ${{env.FILE_NAME}}.pdf
-          retention-days: 365
+          retention-days: 90
+          if-no-files-found: error
