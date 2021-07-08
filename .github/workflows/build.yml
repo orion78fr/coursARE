@@ -1,0 +1,25 @@
+name: Compile latex document
+on: push
+
+env:
+  FILE_NAME: cours_ARE
+
+jobs:
+  pdf:
+    name: PDF Export
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Build
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: ${{env.FILE_NAME}}.tex
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: PDF Document
+          path: ${{env.FILE_NAME}}.pdf
+          retention-days: 365
